@@ -1,0 +1,24 @@
+kind = "mobile"
+previewPath = "/brcommunity-android-helper/"
+title = "BRCommunity Android Helper"
+description = "A mobile companion for BRCommunity discovery automation. Sign in, load server-controlled discovery settings, play YouTube and Instagram links in managed cards, report engagement, and keep sessions alive with clear controls and activity history."
+version = "1.0.0"
+id = "artifacts/brcommunity-android-helper"
+router = "expo-domain"
+
+[[services]]
+name = "expo"
+ensurePreviewReachable = "/status"
+paths = [ "/brcommunity-android-helper/" ]
+localPort = 25063
+
+[services.development]
+run = "pnpm --filter @workspace/brcommunity-android-helper run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/brcommunity-android-helper", "run", "build" ]
+run = [ "pnpm", "--filter", "@workspace/brcommunity-android-helper", "run", "serve" ]
+
+[services.env]
+PORT = "25063"
+BASE_PATH = "/brcommunity-android-helper/"

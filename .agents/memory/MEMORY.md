@@ -1,0 +1,5 @@
+- [Android browser control](android-browser-control.md) — managed sessions use an in-app browser surface because Android sandboxes cannot silently drive separate Chrome.
+- [Expo web font preview](expo-web-font-preview.md) — load bundled fonts natively; avoid browser FontFaceObserver timeouts in preview.
+- [BRCommunity API proxy](brcommunity-api-proxy.md) — web preview uses a same-origin proxy because the upstream API lacks browser CORS headers.
+- [BRCommunity Helper identity](brcommunity-helper-identity.md) — login requires a stable device identity matching the extension handshake.
+- [Web video audio](web-video-audio.md) — autoplay is muted until the user explicitly enables sound.
