@@ -52,6 +52,7 @@ android {
         versionCode releaseVersionCode
         versionName releaseVersionName
         buildConfigField "String", "REACT_NATIVE_RELEASE_LEVEL", "\"${findProperty('reactNativeReleaseLevel') ?: 'stable'}\""
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
         if (releaseSigningConfigured) {
@@ -89,6 +90,9 @@ android {
 
 dependencies {
     implementation("com.facebook.react:react-android")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test:runner:1.6.2")
+    androidTestImplementation("androidx.test:rules:1.6.1")
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true"
     def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true"
     def isWebpAnimatedEnabled = (findProperty('expo.webp.animated') ?: "") == "true"
