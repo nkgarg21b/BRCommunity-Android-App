@@ -9,7 +9,6 @@ import { WebMediaPreview } from '@/components/WebMediaPreview';
 
 type Props = {
   item: ManagedItem;
-  onEngage: (localId: string) => void;
   onClose: (localId: string) => void;
   soundEnabled: boolean;
   soundRequest: number;
@@ -17,7 +16,7 @@ type Props = {
   incognito: boolean;
 };
 
-export function BrowserCard({ item, onEngage, onClose, soundEnabled, soundRequest, onEnableSound, incognito }: Props) {
+export function BrowserCard({ item, onClose, soundEnabled, soundRequest, onEnableSound, incognito }: Props) {
   const colors = useColors();
   const ref = useRef<WebView>(null);
   const [loaded, setLoaded] = useState(false);
@@ -30,12 +29,6 @@ export function BrowserCard({ item, onEngage, onClose, soundEnabled, soundReques
     const timer = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(timer);
   }, []);
-
-  const runEngagement = () => {
-    if (!safeUrl || platform === 'other') return;
-    ref.current?.injectJavaScript('window.__BR_ENGAGE__?.(); true;');
-    onEngage(item.localId);
-  };
 
   const enableSound = () => {
     ref.current?.injectJavaScript(WEBVIEW_ENABLE_AUDIO);
@@ -90,9 +83,7 @@ export function BrowserCard({ item, onEngage, onClose, soundEnabled, soundReques
               if (soundEnabled) ref.current?.injectJavaScript(WEBVIEW_ENABLE_AUDIO);
             }}
             onMessage={() => {
-              // Messages from page content are untrusted. Engagement state is
-              // committed only by the explicit controller action, never by a
-              // page-originated postMessage.
+              // Page messages are ignored. In-app WebView does not perform engagement.
             }}
             injectedJavaScript={WEBVIEW_BOOTSTRAP}
             javaScriptEnabled
@@ -120,10 +111,6 @@ export function BrowserCard({ item, onEngage, onClose, soundEnabled, soundReques
       </View>
       <View style={styles.cardFooter}>
         <View style={styles.liveLabel}><View style={[styles.liveDot, { backgroundColor: colors.primary }]} /><Text style={[styles.liveText, { color: colors.mutedForeground }]}>{item.focused ? 'Active surface' : 'Managed in app'}</Text></View>
-        <Pressable accessibilityLabel="Engage now" testID={`engage-${item.localId}`} onPress={runEngagement} style={[styles.engageButton, { borderColor: colors.border }]}>
-          <AppIcon family="feather" name="heart" size={13} color={colors.accent} />
-          <Text style={[styles.engageText, { color: colors.foreground }]}>Engage</Text>
-        </Pressable>
       </View>
     </View>
   );
@@ -153,6 +140,4 @@ const styles = StyleSheet.create({
   liveLabel: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   liveDot: { width: 6, height: 6, borderRadius: 99 },
   liveText: { fontFamily: 'Inter_500Medium', fontSize: 10 },
-  engageButton: { borderWidth: 1, borderRadius: 99, paddingHorizontal: 9, paddingVertical: 5, flexDirection: 'row', alignItems: 'center', gap: 5 },
-  engageText: { fontFamily: 'Inter_600SemiBold', fontSize: 10 },
 });
