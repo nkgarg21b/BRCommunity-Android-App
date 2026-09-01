@@ -16,6 +16,12 @@ if (( ${#missing[@]} > 0 )) && [[ ! -f "$ANDROID_DIR/keystore.properties" ]]; th
   exit 2
 fi
 
+cd "$ROOT_DIR"
+# app.json is the source of truth for the production application ID. Regenerate
+# the Android project so Expo/config plugins cannot leave a stale namespace,
+# package path, manifest component, or generated native source behind.
+pnpm exec expo prebuild --platform android --clean --non-interactive
+
 cd "$ANDROID_DIR"
 ./gradlew clean bundleRelease
 

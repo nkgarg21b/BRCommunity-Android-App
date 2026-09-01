@@ -19,5 +19,7 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Repository security and architecture checks
         run: pnpm run ci:verify
+      - name: ManagerContext lifecycle contract tests
+        run: pnpm run test:manager-context
       - name: Typecheck
         run: pnpm typecheck

@@ -17,7 +17,7 @@
       "supportsTablet": false
     },
     "android": {
-      "package": "com.anonymous.brcommunityandroidhelper",
+      "package": "com.brcommunity.androidhelper",
       "versionCode": 1
     },
     "web": {
