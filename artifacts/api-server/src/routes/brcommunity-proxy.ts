@@ -4,6 +4,7 @@ const router: IRouter = Router();
 const upstreamBase = (
   process.env["BRCOMMUNITY_API_BASE"] || "https://brcommunity.xyz/community/api"
 ).replace(/\/$/, "");
+const UPSTREAM_TIMEOUT_MS = 15_000;
 
 router.use("/brcommunity", async (req, res) => {
   const originalUrl = req.originalUrl || "";
@@ -21,6 +22,9 @@ router.use("/brcommunity", async (req, res) => {
     headers["Content-Type"] = "application/json";
   }
 
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS);
+
   try {
     const response = await fetch(target, {
       method: req.method,
@@ -28,13 +32,20 @@ router.use("/brcommunity", async (req, res) => {
       body: ["POST", "PUT", "PATCH"].includes(req.method)
         ? JSON.stringify(req.body ?? {})
         : undefined,
+      signal: controller.signal,
     });
     const contentType = response.headers.get("content-type");
     if (contentType) res.setHeader("content-type", contentType);
+    res.setHeader("cache-control", "no-store");
     res.status(response.status).send(await response.text());
   } catch (error) {
     req.log.error({ err: error, target }, "BRCommunity proxy request failed");
-    res.status(502).json({ error: "Unable to reach BRCommunity upstream." });
+    const timedOut = error instanceof Error && error.name === "AbortError";
+    res.status(502).json({
+      error: timedOut ? "BRCommunity upstream timed out." : "Unable to reach BRCommunity upstream.",
+    });
+  } finally {
+    clearTimeout(timeout);
   }
 });
 
