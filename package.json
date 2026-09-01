@@ -10,7 +10,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "ci:verify": "bash scripts/verify-repository.sh"
+    "ci:verify": "bash scripts/verify-repository.sh",
+    "test:manager-context": "node --test scripts/manager-context.contract.test.mjs"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -20,7 +21,7 @@
     "@expo/ngrok": "^4.1.0",
     "@expo/vector-icons": "^15.0.3",
     "@react-native-async-storage/async-storage": "2.2.0",
-    "@stardazed/streams-text-encoding": "^1.0.2",
+    "@stardazed/streams-text-encoding": "^1.0.0",
     "@tanstack/react-query": "catalog:",
     "@types/react": "~19.1.10",
     "@types/react-dom": "~19.1.7",
