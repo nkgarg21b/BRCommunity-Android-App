@@ -38,6 +38,8 @@ export const ManagedItemSchema = LinkItemSchema.extend({
   engageAt: z.number().finite(),
   engagementSent: z.boolean(),
   focused: z.boolean(),
+  // Optional for backward-compatible persisted state; default treated as false.
+  incognito: z.boolean().optional(),
 });
 
 export const ManagerStateSchema = z.object({
