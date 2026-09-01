@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "brcommunity-android-helper",
+    "scheme": "brcommunity",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
@@ -17,8 +17,9 @@
       "supportsTablet": false
     },
     "android": {
-      "package": "com.anonymous.brcommunityandroidhelper",
-      "versionCode": 1
+      "package": "com.brcommunity.androidhelper",
+      "versionCode": 1,
+      "allowBackup": false
     },
     "web": {
       "favicon": "./assets/images/icon.png"
