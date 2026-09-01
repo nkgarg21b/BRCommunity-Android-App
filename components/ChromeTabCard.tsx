@@ -54,10 +54,14 @@ export function ChromeTabCard({ item, onEngage, onClose }: Props) {
       </View>
       <View style={styles.footer}>
         <View style={styles.liveLabel}><View style={[styles.liveDot, { backgroundColor: colors.primary }]} /><Text style={[styles.liveText, { color: colors.mutedForeground }]}>{item.focused ? 'Active Chrome tab' : 'Managed in Chrome'}</Text></View>
-        <Pressable accessibilityLabel="Engage active Chrome tab" testID={`engage-${item.localId}`} onPress={() => onEngage(item.localId)} style={[styles.engageButton, { borderColor: colors.border }]}>
-          <AppIcon family="feather" name="heart" size={13} color={colors.accent} />
-          <Text style={[styles.engageText, { color: colors.foreground }]}>Engage</Text>
-        </Pressable>
+        {item.incognito ? (
+          <Text style={[styles.engageText, { color: colors.mutedForeground }]}>Incognito · no engage</Text>
+        ) : (
+          <Pressable accessibilityLabel="Engage active Chrome tab" testID={`engage-${item.localId}`} onPress={() => onEngage(item.localId)} style={[styles.engageButton, { borderColor: colors.border }]}>
+            <AppIcon family="feather" name="heart" size={13} color={colors.accent} />
+            <Text style={[styles.engageText, { color: colors.foreground }]}>Engage</Text>
+          </Pressable>
+        )}
       </View>
     </View>
   );
